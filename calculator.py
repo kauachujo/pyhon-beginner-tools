@@ -47,7 +47,10 @@ def on_button_click(symbol):
         entry.delete(0, tk.END)
         entry.insert(0, result)
     else:
-        entry.insert(tk.END, symbol)
+        text = entry.get()
+        op_symbols = ['+', '-', '×', '÷']
+        if text[-1] not in op_symbols:
+            entry.insert(tk.END, symbol)
 
 
 for i, symbol in enumerate(symbol_list):
@@ -67,5 +70,4 @@ for i, button in enumerate(button_list):
     if grid['row'] == 1 or grid['column'] == 4:
         button.config(bg='orange')
     
-print(button_list)
 window.mainloop()
