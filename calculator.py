@@ -29,6 +29,8 @@ row = 1
 column = 1
 
 def on_button_click(symbol):
+    text = entry.get()
+
     if symbol.isdigit():
         entry.insert(tk.END, symbol)
 
@@ -36,21 +38,32 @@ def on_button_click(symbol):
         entry.delete(0, tk.END)
 
     elif symbol == '⌫':
-        text = entry.get()
         entry.delete(0, tk.END)
         entry.insert(0, text[:-1])
     
     elif symbol == '=':
-        expression = entry.get().replace('×', '*')
-        expression = expression.replace('÷', '/')
-        result = str(eval(expression))
-        entry.delete(0, tk.END)
-        entry.insert(0, result)
+        if text:
+            try:
+                expression = entry.get().replace('×', '*')
+                expression = expression.replace('÷', '/')
+                result = eval(expression)
+                if result.is_integer():
+                    expression = expression.replace('/', '//')
+                    result = eval(expression)
+
+                entry.delete(0, tk.END)
+                entry.insert(0, str(result))
+            except:
+                print('Error')
     else:
         text = entry.get()
         op_symbols = ['+', '-', '×', '÷']
-        if text[-1] not in op_symbols:
-            entry.insert(tk.END, symbol)
+        if not text == '':
+            if text[-1] not in op_symbols:
+                entry.insert(tk.END, symbol)
+        else:
+            if symbol in ['+', '-']:
+                entry.insert(tk.END, symbol)
 
 
 for i, symbol in enumerate(symbol_list):
